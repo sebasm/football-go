@@ -19,6 +19,7 @@ func NewLeagueHanlder() *LeagueHandler {
 		Mux: chi.NewRouter(),
 	}
 	h.Get("/{leagueID}", h.getLeague)
+	h.Get("/import-league/{leagueID}", h.importLeague)
 	return h
 }
 
@@ -33,4 +34,8 @@ func (h *LeagueHandler) getLeague(w http.ResponseWriter, r *http.Request) {
 
 	render.JSON(w, r, asd)
 
+}
+
+func (h *LeagueHandler) importLeague(w http.ResponseWriter, r *http.Request) {
+	chi.URLParam(r, "leagueID")
 }

@@ -34,9 +34,16 @@ func (s *LeagueService) League(id int) (*football.League, error) {
 	var u football.League
 	row := s.DB.QueryRow(`SELECT id, name, code, area_name FROM league WHERE id = $1`, id)
 	if err := row.Scan(&u.ID, &u.Name, &u.Code, &u.AreaName); err != nil {
-		fmt.Println("Errrror")
-		fmt.Println(err)
+		if err == sql.ErrNoRows {
+			fmt.Println("No rows found")
+			fmt.Println(err)
+		}
 		return nil, err
 	}
 	return &u, nil
+}
+
+func (s *LeagueService) ImportLeague(id int) (string, error) {
+
+	return "", nil
 }

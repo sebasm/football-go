@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	football "github.com/sebasm/footballgo"
 	httpm "github.com/sebasm/footballgo/http"
 
 	"github.com/go-chi/chi"
@@ -11,26 +12,6 @@ import (
 	"github.com/go-chi/render"
 	"github.com/sebasm/footballgo/postgres"
 )
-
-// func Routes() *chi.Mux {
-
-// 	router := chi.NewRouter()
-
-// 	router.Use(
-// 		render.SetContentType(render.ContentTypeJSON),
-// 		middleware.Logger,
-// 		middleware.RedirectSlashes,
-// 		middleware.Recoverer,
-// 	)
-
-// 	router.Route("/v1", func(r chi.Router) {
-// 		r.Mount("/api/book", httpm.BookRoutes())
-// 		// r.Mount("/api/user", routes.UserRoutes())
-// 	})
-
-// 	return router
-
-// }
 
 func main() {
 
@@ -41,7 +22,7 @@ func main() {
 	}
 	defer db.Close()
 
-	leagueService := &postgres.LeagueService{DB: db}
+	var leagueService football.LeagueService = &postgres.LeagueService{DB: db}
 
 	h := httpm.NewLeagueHanlder()
 	h.LeagueService = leagueService
