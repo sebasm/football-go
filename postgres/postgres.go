@@ -43,7 +43,13 @@ func (s *LeagueService) League(id int) (*football.League, error) {
 	return &u, nil
 }
 
-func (s *LeagueService) ImportLeague(id int) (string, error) {
-
+func (s *LeagueService) ImportLeague(league *football.LeagueDTO) (string, error) {
+	sqlStatement := `
+	INSERT INTO league (id, name, code, area_name)
+	VALUES ($1, $2, $3, $4)`
+	_, err := s.DB.Exec(sqlStatement, league.ID, league.Name, league.Code, league.Area.Name)
+	if err != nil {
+		panic(err)
+	}
 	return "", nil
 }

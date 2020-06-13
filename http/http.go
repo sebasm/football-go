@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/sebasm/footballgo/api"
+
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
 	football "github.com/sebasm/footballgo"
@@ -12,6 +14,7 @@ import (
 type LeagueHandler struct {
 	*chi.Mux
 	LeagueService football.LeagueService
+	LeagueAPI     football.LeagueAPI
 }
 
 func NewLeagueHanlder() *LeagueHandler {
@@ -24,13 +27,14 @@ func NewLeagueHanlder() *LeagueHandler {
 }
 
 func (h *LeagueHandler) getLeague(w http.ResponseWriter, r *http.Request) {
-	leagueID, err := strconv.Atoi(chi.URLParam(r, "leagueID"))
-	asd, err := h.LeagueService.League(leagueID)
+	_, err := strconv.Atoi(chi.URLParam(r, "leagueID"))
+	league, err := api.GetLeague("CL")
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		render.JSON(w, r, "League not found.")
 		return
 	}
+	asd, err := h.LeagueService.ImportLeague(league)
 
 	render.JSON(w, r, asd)
 
